@@ -191,6 +191,9 @@ const fightHtml = ` <div class="fightContainer">
     <button id="charDefBtn">Defend</button>
     <button id="charSklBtn">Skill</button>
   </div>
+  <div class="apBar">
+    <p class = "charAP"></p>
+  </div>
   <div class="diceContainer">
     <img src="" class="dice" id="dice1">
     <img src="" class="dice" id="dice2">
@@ -222,6 +225,8 @@ let enemyCurrentHealth = 40; //change
 let charAttack = 0;
 let charAttackArr = []; //each char attack different number of times
 let enemyAttack = 3; //change
+
+let charAP = 3;
 
 ////////////////////////////functions
 const setCharToon = () => {
@@ -319,14 +324,21 @@ const rollAllAttackDice = () => {
 
 const renderCharHealthBar = () => {
   const bar = document.querySelector(".charHealthBarDisplay");
+  const num = document.querySelector(".charHealth");
   const health = "|".repeat(charCurrentHealth);
   bar.innerText = health;
+  num.innerText = charCurrentHealth;
 };
 
 const renderEnemyHealthBar = () => {
   const bar = document.querySelector(".enemyHealthBarDisplay");
   const health = "|".repeat(enemyCurrentHealth > 0 ? enemyCurrentHealth : 0);
   bar.innerText = health;
+};
+
+const renderCharAP = (num) => {
+  const charAP = document.querySelector(".charAP");
+  charAP.innerText = `AP = ${num}`;
 };
 
 const charAttackMove = () => {
@@ -363,7 +375,19 @@ const charAttackMove = () => {
   }
 
   //render health bar
-  renderCharHealthBar();
+  if (charAP > 1) {
+    charAP -= 1;
+    renderCharAP(charAP);
+  } else {
+    charAP -= 1;
+    renderCharAP(charAP);
+    //enemyAttack
+    setTimeout(() => {}, 1000);
+    charCurrentHealth -= 5;
+    renderCharHealthBar();
+    charAP = 3;
+    renderCharAP(charAP);
+  }
 };
 
 const goGame = () => {
