@@ -46,6 +46,28 @@ const weaponAttackDmg = {
   Orc: 12,
 };
 
+const itemArray = [
+  { name: "Armor", effect: "Def+3" },
+  { name: "Banana", effect: "HP+5" },
+  { name: "Book", effect: "Atk+1" },
+  { name: "Boots", effect: "Def+1" },
+  { name: "Broadsword", effect: "Atk+4" },
+  { name: "Cap", effect: "Def+1" },
+  { name: "Cheese", effect: "HP+5" },
+  { name: "Club", effect: "Atk+1" },
+  { name: "Daggers", effect: "Atk+2" },
+  { name: "Gloves", effect: "Def+1" },
+  { name: "Helmet", effect: "Def+2" },
+  { name: "Knife", effect: "Atk+1" },
+  { name: "Meat", effect: "HP+1" },
+  { name: "Potion", effect: "AP+1" },
+  { name: "Scimitar", effect: "Atk+3" },
+  { name: "Shield", effect: "Def+1" },
+  { name: "Shirt", effect: "Def+1" },
+  { name: "Tome", effect: "AP+1,Atk+1" },
+  { name: "Wand", effect: "Atk+2" },
+];
+
 let charSelected = "";
 
 //change char callback fn
