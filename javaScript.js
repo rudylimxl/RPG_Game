@@ -1,3 +1,5 @@
+// const { message } = require("prompt");
+
 //get start button from DOM
 const startButton = document.querySelector(".btn1");
 const charArray = ["Knight", "Wizard", "Orc"];
@@ -173,7 +175,8 @@ startButton.addEventListener("click", startChar);
 ////////////////////////////////////////////////////////////////////
 //page 4 - fights
 ////////////////////////////////////////////////////////////////////
-const fightHtml = ` <div class="fightContainer">
+const fightHtml = ` 
+<div class="fightContainer">
 <div class="charFightContainer">
   <div class="healthBar">
     <p>Char</p>
@@ -212,6 +215,11 @@ const fightHtml = ` <div class="fightContainer">
       id="enemyToon"
     />
   </div>
+</div>
+<div class="battleLogContainer">
+  <ul class="battleLog"> 
+    <li> Battle Started! </li>
+  </ul>
 </div>
 </div>`;
 
@@ -341,6 +349,19 @@ const renderCharAP = (num) => {
   charAP.innerText = `AP = ${num}`;
 };
 
+const updateBattleLog = (message) => {
+  const log = document.querySelector(".battleLog");
+  const add = document.createElement("li");
+  add.innerText = message;
+  log.appendChild(add);
+};
+
+const removeEventListener = () => {
+  //change to remove all button later
+  const btn = document.querySelector("#charAtkBtn");
+  btn.removeEventListener("click", charAttackMove);
+};
+
 const charAttackMove = () => {
   const enemyHealthDisplay = document.querySelector(".enemyHealth");
   const enemyToon = document.querySelector("#enemyToon");
@@ -366,8 +387,9 @@ const charAttackMove = () => {
       "https://storage.cloud.google.com/rpg_game1_asset/bigdemondeath.gif"
     );
     setTimeout(() => {
-      alert("You Win!");
-    }, 500);
+      updateBattleLog(`Char won the battle!`);
+    }, 800);
+    removeEventListener();
   } else {
     enemyCurrentHealth -= thisTurnAttack;
     enemyHealthDisplay.innerHTML = enemyCurrentHealth;
@@ -378,11 +400,14 @@ const charAttackMove = () => {
   if (charAP > 1) {
     charAP -= 1;
     renderCharAP(charAP);
+    updateBattleLog(`Char attacked for ${thisTurnAttack} total damage!`);
   } else {
     charAP -= 1;
     renderCharAP(charAP);
+    updateBattleLog(`Char attacked for ${thisTurnAttack} total damage!`);
     //enemyAttack
     setTimeout(() => {}, 1000);
+    updateBattleLog(`Enemy attacked for 5 damage!`);
     charCurrentHealth -= 5;
     renderCharHealthBar();
     charAP = 3;
@@ -401,6 +426,7 @@ const goGame = () => {
   setCharToon();
   renderCharHealthBar();
   renderEnemyHealthBar();
+  renderCharAP(charAP);
 
   charHealthDisplay.innerText = charCurrentHealth;
   enemyHealthDisplay.innerText = enemyCurrentHealth;
