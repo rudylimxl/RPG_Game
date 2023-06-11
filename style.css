@@ -255,6 +255,20 @@ img {
   background-size: cover;
 }
 
+.itemBar {
+  border: 2px solid gray;
+  height: 50px;
+  width: fit-content;
+  display: flex;
+  margin-left: auto;
+  border-radius: 12px;
+  background-color: lightgray;
+  padding: 3px;
+}
+
+.itemIcon {
+}
+
 /* /////////// 3.1 Home */
 .homeContainer {
   background: url("https://storage.cloud.google.com/rpg_game1_asset/Home_bg.png");
@@ -298,6 +312,11 @@ img {
   padding-top: 85px;
   font-size: larger;
   font-weight: 700;
+}
+
+/* ///////////3.3 tavern */
+#tavern {
+  background: url("https://storage.cloud.google.com/rpg_game1_asset/Tavern_bg.png");
 }
 
 /* ////////////////////////////////////////////////////////////

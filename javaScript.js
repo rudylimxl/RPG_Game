@@ -373,7 +373,7 @@ const mapBtnEventListenerToForest = () => {
 
 const mapBtnEventListenerToTavern = () => {
   currentMapProgress += 1;
-  return goFight();
+  return goTavern();
 };
 
 const mapBtnEventListenerToTower = () => {
@@ -407,8 +407,20 @@ const mapHtml = `
 <button class="nodeButton nodeVisited" id="map-btn4" title="Cave"></button>
 <button class="nodeButton nodeVisited" id="map-btn5" title="Village"></button>
 <button class="nodeButton nodeVisited" id="map-btn6" title="Graveyard"></button>
+<div class="itemBar"></div>
 </div>
 `;
+
+const renderItemsBar = (itemArr) => {
+  const itemBar = document.querySelector(".itemBar");
+  for (let i of itemArr) {
+    const item = document.createElement("img");
+    const itemUrl = constructAssetUrl(i, "png");
+    item.setAttribute("src", itemUrl);
+    item.setAttribute("title", i);
+    itemBar.appendChild(item);
+  }
+};
 
 const nodes = [
   mapBtnEventListenerToHome,
@@ -425,6 +437,7 @@ const goMap = () => {
   document.body.innerHTML = mapHtml;
   drawMapPath(currentMapProgress);
   addMapBtnListener(currentMapProgress, nodes[currentMapProgress]);
+  renderItemsBar(charCurrentItems);
 };
 
 ////////////// 3.1 Home
@@ -455,6 +468,37 @@ const pickItem = (event) => {
 const goHome = () => {
   document.body.innerHTML = "";
   document.body.innerHTML = homeHtml;
+
+  const items = document.querySelectorAll(".homeItem");
+  for (let i of items) {
+    const selectedItem = rollItem();
+    i.style.background =
+      `url("` + constructAssetUrl(selectedItem.name, `png`) + `")`;
+    i.style.backgroundRepeat = "no-repeat";
+    i.style.backgroundPosition = "top center";
+    i.style.backgroundColor = "lightgray";
+    i.setAttribute("id", `${selectedItem.name}`);
+    i.innerText = `${selectedItem.name}
+    ${selectedItem.effect}`;
+    i.addEventListener("click", pickItem);
+  }
+};
+
+////////////////// 3.3 Tavern
+const tavernHtml = `<div class="homeContainer" id="tavern">
+<h2 class="homeText">
+  You find a tavern offering a selection of equipments. Select one.
+</h2>
+<div class="homeItemContainer">
+  <button class="homeItem"></button>
+  <button class="homeItem"></button>
+  <button class="homeItem"></button>
+</div>
+</div>`;
+
+const goTavern = () => {
+  document.body.innerHTML = "";
+  document.body.innerHTML = tavernHtml;
 
   const items = document.querySelectorAll(".homeItem");
   for (let i of items) {
