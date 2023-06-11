@@ -172,6 +172,8 @@ startButton.addEventListener("click", startChar);
 //page 3 - maps
 ////////////////////////////////////////////////////////////////////
 
+let currentMapProgress = 0;
+
 //draw map path on canvas
 const drawMapPath = (num) => {
   const canvas = document.querySelector("#mapCanvas");
@@ -227,44 +229,47 @@ const drawMapPath = (num) => {
 };
 
 ////////// event listeners
-
-const mapBtnEventListenerToFight = () => {
-  return goFight();
+const addMapBtnListener = (id, type) => {
+  const btn = document.querySelector(`#map-btn${id}`);
+  btn.addEventListener("click", type, { once: true });
 };
 
-const mapBtnEventListenerToVillage = () => {
+const mapBtnEventListenerToHome = () => {
+  currentMapProgress += 1;
   return goFight();
 };
 
 const mapBtnEventListenerToForest = () => {
+  currentMapProgress += 1;
   return goFight();
 };
 
 const mapBtnEventListenerToTavern = () => {
+  currentMapProgress += 1;
   return goFight();
 };
 
 const mapBtnEventListenerToSwamp = () => {
-  return goFight();
-};
-
-const mapBtnEventListenerToHome = () => {
-  return goFight();
-};
-
-const mapBtnEventListenerToGraveyard = () => {
+  currentMapProgress += 1;
   return goFight();
 };
 
 const mapBtnEventListenerToCave = () => {
+  currentMapProgress += 1;
   return goFight();
 };
 
-const addMapBtnListener = (id, type) => {
-  const btn = document.querySelector(`#map-btn${id}`);
-  btn.addEventListener("click", type);
+const mapBtnEventListenerToVillage = () => {
+  currentMapProgress += 1;
+  return goFight();
 };
 
+const mapBtnEventListenerToGraveyard = () => {
+  currentMapProgress += 1;
+  return goFight();
+};
+
+///// map HTML
 const mapHtml = `
 <div class="mapContainer">
 <canvas id="mapCanvas" height="450" width="750"></canvas>
@@ -278,17 +283,21 @@ const mapHtml = `
 </div>
 `;
 
+const nodes = [
+  mapBtnEventListenerToHome,
+  mapBtnEventListenerToForest,
+  mapBtnEventListenerToTavern,
+  mapBtnEventListenerToSwamp,
+  mapBtnEventListenerToCave,
+  mapBtnEventListenerToVillage,
+  mapBtnEventListenerToGraveyard,
+];
+
 const goMap = () => {
   document.body.innerHTML = "";
   document.body.innerHTML = mapHtml;
-  drawMapPath(3);
-  addMapBtnListener(0, mapBtnEventListenerToHome);
-  addMapBtnListener(1, mapBtnEventListenerToForest);
-  addMapBtnListener(2, mapBtnEventListenerToTavern);
-  addMapBtnListener(3, mapBtnEventListenerToSwamp);
-  addMapBtnListener(4, mapBtnEventListenerToCave);
-  addMapBtnListener(5, mapBtnEventListenerToVillage);
-  addMapBtnListener(6, mapBtnEventListenerToGraveyard);
+  drawMapPath(currentMapProgress);
+  addMapBtnListener(currentMapProgress, nodes[currentMapProgress]);
 };
 
 ////////////////////////////////////////////////////////////////////
