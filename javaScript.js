@@ -79,7 +79,7 @@ const changeChar = (event) => {
   img.setAttribute("src", charUrl[char]);
   charSelected = char;
   const gameGo = document.querySelector(".goButton");
-  gameGo.addEventListener("click", goGame);
+  gameGo.addEventListener("click", goMap);
   gameGo.innerText = `Cool ${char} outift! Let's go!!`;
   const weaponImg = document.querySelector(".weaponImg");
   const weaponUrl = weaponArr[`${charSelected}`];
@@ -171,6 +171,125 @@ startButton.addEventListener("click", startChar);
 ////////////////////////////////////////////////////////////////////
 //page 3 - maps
 ////////////////////////////////////////////////////////////////////
+
+//draw map path on canvas
+const drawMapPath = (num) => {
+  const canvas = document.querySelector("#mapCanvas");
+  const ctx = canvas.getContext("2d");
+
+  ctx.beginPath();
+  ctx.moveTo(134, 390);
+  ctx.lineTo(100, 280);
+  ctx.strokeStyle = num > 0 ? "gray" : "red";
+  ctx.lineWidth = 10;
+  ctx.lineCap = "round";
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(100, 280);
+  ctx.lineTo(80, 150);
+  ctx.strokeStyle = num > 1 ? "gray" : "red";
+  ctx.lineWidth = 10;
+  ctx.lineCap = "round";
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(80, 150);
+  ctx.quadraticCurveTo(100, 70, 350, 50);
+  ctx.strokeStyle = num > 2 ? "gray" : "red";
+  ctx.lineWidth = 10;
+  ctx.lineCap = "round";
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(350, 50);
+  ctx.quadraticCurveTo(500, 40, 560, 150);
+  ctx.strokeStyle = num > 3 ? "gray" : "red";
+  ctx.lineWidth = 10;
+  ctx.lineCap = "round";
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(560, 150);
+  ctx.quadraticCurveTo(700, 200, 540, 370);
+  ctx.strokeStyle = num > 4 ? "gray" : "red";
+  ctx.lineWidth = 10;
+  ctx.lineCap = "round";
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(540, 370);
+  ctx.quadraticCurveTo(390, 340, 370, 240);
+  ctx.strokeStyle = num > 5 ? "gray" : "red";
+  ctx.lineWidth = 10;
+  ctx.lineCap = "round";
+  ctx.stroke();
+};
+
+////////// event listeners
+
+const mapBtnEventListenerToFight = () => {
+  return goFight();
+};
+
+const mapBtnEventListenerToVillage = () => {
+  return goFight();
+};
+
+const mapBtnEventListenerToForest = () => {
+  return goFight();
+};
+
+const mapBtnEventListenerToTavern = () => {
+  return goFight();
+};
+
+const mapBtnEventListenerToSwamp = () => {
+  return goFight();
+};
+
+const mapBtnEventListenerToHome = () => {
+  return goFight();
+};
+
+const mapBtnEventListenerToGraveyard = () => {
+  return goFight();
+};
+
+const mapBtnEventListenerToCave = () => {
+  return goFight();
+};
+
+const addMapBtnListener = (id, type) => {
+  const btn = document.querySelector(`#map-btn${id}`);
+  btn.addEventListener("click", type);
+};
+
+const mapHtml = `
+<div class="mapContainer">
+<canvas id="mapCanvas" height="450" width="750"></canvas>
+<button class="nodeButton" id="map-btn0" title="Home"></button>
+<button class="nodeButton" id="map-btn1" title="Forest"></button>
+<button class="nodeButton" id="map-btn2" title="Tavern"></button>
+<button class="nodeButton" id="map-btn3" title="Swamp"></button>
+<button class="nodeButton" id="map-btn4" title="Cave"></button>
+<button class="nodeButton" id="map-btn5" title="Village"></button>
+<button class="nodeButton" id="map-btn6" title="Graveyard"></button>
+</div>
+`;
+
+const goMap = () => {
+  document.body.innerHTML = "";
+  document.body.innerHTML = mapHtml;
+  drawMapPath(3);
+  addMapBtnListener(0, mapBtnEventListenerToHome);
+  addMapBtnListener(1, mapBtnEventListenerToForest);
+  addMapBtnListener(2, mapBtnEventListenerToTavern);
+  addMapBtnListener(3, mapBtnEventListenerToSwamp);
+  addMapBtnListener(4, mapBtnEventListenerToCave);
+  addMapBtnListener(5, mapBtnEventListenerToVillage);
+  addMapBtnListener(6, mapBtnEventListenerToGraveyard);
+};
 
 ////////////////////////////////////////////////////////////////////
 //page 4 - fights
@@ -313,6 +432,11 @@ const setCharAttack = () => {
     : (charAttack = 12);
 };
 
+const resetCurrentHealth = () => {
+  charCurrentHealth = 20;
+  enemyCurrentHealth = 40;
+};
+
 const rollAttackDice = () => {
   return Math.ceil(Math.random() * charAttack);
 };
@@ -388,7 +512,9 @@ const charAttackMove = () => {
     );
     setTimeout(() => {
       updateBattleLog(`Char won the battle!`);
-    }, 800);
+      updateBattleLog(`Going back to the map...`);
+    }, 1400);
+    setTimeout(goMap, 5500);
     removeEventListener();
   } else {
     enemyCurrentHealth -= thisTurnAttack;
@@ -415,7 +541,8 @@ const charAttackMove = () => {
   }
 };
 
-const goGame = () => {
+const goFight = () => {
+  //previously goGame
   document.body.innerHTML = "";
   document.body.innerHTML = fightHtml;
   const charHealthDisplay = document.querySelector(".charHealth");
@@ -427,6 +554,7 @@ const goGame = () => {
   renderCharHealthBar();
   renderEnemyHealthBar();
   renderCharAP(charAP);
+  resetCurrentHealth();
 
   charHealthDisplay.innerText = charCurrentHealth;
   enemyHealthDisplay.innerText = enemyCurrentHealth;
