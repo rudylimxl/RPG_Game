@@ -232,6 +232,7 @@ const drawMapPath = (num) => {
 const addMapBtnListener = (id, type) => {
   const btn = document.querySelector(`#map-btn${id}`);
   btn.addEventListener("click", type, { once: true });
+  btn.classList.toggle("nodeVisited");
 };
 
 const mapBtnEventListenerToHome = () => {
@@ -249,7 +250,7 @@ const mapBtnEventListenerToTavern = () => {
   return goFight();
 };
 
-const mapBtnEventListenerToSwamp = () => {
+const mapBtnEventListenerToTower = () => {
   currentMapProgress += 1;
   return goFight();
 };
@@ -273,13 +274,13 @@ const mapBtnEventListenerToGraveyard = () => {
 const mapHtml = `
 <div class="mapContainer">
 <canvas id="mapCanvas" height="450" width="750"></canvas>
-<button class="nodeButton" id="map-btn0" title="Home"></button>
-<button class="nodeButton" id="map-btn1" title="Forest"></button>
-<button class="nodeButton" id="map-btn2" title="Tavern"></button>
-<button class="nodeButton" id="map-btn3" title="Swamp"></button>
-<button class="nodeButton" id="map-btn4" title="Cave"></button>
-<button class="nodeButton" id="map-btn5" title="Village"></button>
-<button class="nodeButton" id="map-btn6" title="Graveyard"></button>
+<button class="nodeButton nodeVisited" id="map-btn0" title="Home"></button>
+<button class="nodeButton nodeVisited" id="map-btn1" title="Forest"></button>
+<button class="nodeButton nodeVisited" id="map-btn2" title="Tavern"></button>
+<button class="nodeButton nodeVisited" id="map-btn3" title="Tower"></button>
+<button class="nodeButton nodeVisited" id="map-btn4" title="Cave"></button>
+<button class="nodeButton nodeVisited" id="map-btn5" title="Village"></button>
+<button class="nodeButton nodeVisited" id="map-btn6" title="Graveyard"></button>
 </div>
 `;
 
@@ -287,7 +288,7 @@ const nodes = [
   mapBtnEventListenerToHome,
   mapBtnEventListenerToForest,
   mapBtnEventListenerToTavern,
-  mapBtnEventListenerToSwamp,
+  mapBtnEventListenerToTower,
   mapBtnEventListenerToCave,
   mapBtnEventListenerToVillage,
   mapBtnEventListenerToGraveyard,

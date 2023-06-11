@@ -195,6 +195,10 @@ img {
   width: 50px;
 }
 
+.nodeVisited {
+  filter: brightness(60%);
+}
+
 #map-btn0 {
   position: absolute;
   left: 15%;
@@ -223,7 +227,7 @@ img {
   position: absolute;
   left: 45%;
   top: 6%;
-  background: url("https://storage.cloud.google.com/rpg_game1_asset/Swamp.png");
+  background: url("https://storage.cloud.google.com/rpg_game1_asset/Tower.png");
   background-size: cover;
 }
 
