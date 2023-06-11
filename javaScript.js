@@ -1,5 +1,9 @@
 // const { message } = require("prompt");
 
+const constructAssetUrl = (name, type) => {
+  return `https://storage.cloud.google.com/rpg_game1_asset/${name}.${type}`;
+};
+
 //get start button from DOM
 const startButton = document.querySelector(".btn1");
 const charArray = ["Knight", "Wizard", "Orc"];
@@ -49,26 +53,148 @@ const weaponAttackDmg = {
 };
 
 const itemArray = [
-  { name: "Armor", effect: "Def+3" },
-  { name: "Banana", effect: "HP+5" },
-  { name: "Book", effect: "Atk+1" },
-  { name: "Boots", effect: "Def+1" },
-  { name: "Broadsword", effect: "Atk+4" },
-  { name: "Cap", effect: "Def+1" },
-  { name: "Cheese", effect: "HP+5" },
-  { name: "Club", effect: "Atk+1" },
-  { name: "Daggers", effect: "Atk+2" },
-  { name: "Gloves", effect: "Def+1" },
-  { name: "Helmet", effect: "Def+2" },
-  { name: "Knife", effect: "Atk+1" },
-  { name: "Meat", effect: "HP+1" },
-  { name: "Potion", effect: "AP+1" },
-  { name: "Scimitar", effect: "Atk+3" },
-  { name: "Shield", effect: "Def+1" },
-  { name: "Shirt", effect: "Def+1" },
-  { name: "Tome", effect: "AP+1,Atk+1" },
-  { name: "Wand", effect: "Atk+2" },
+  {
+    name: "Armor",
+    effect: "Def+3",
+    fn: () => {
+      charBonusArmor += 3;
+    },
+  },
+  {
+    name: "Banana",
+    effect: "HP+5",
+    fn: () => {
+      charBonusHP += 5;
+    },
+  },
+  {
+    name: "Book",
+    effect: "Atk+1",
+    fn: () => {
+      charBonusAtk += 1;
+    },
+  },
+  {
+    name: "Boots",
+    effect: "Def+1",
+    fn: () => {
+      charBonusArmor += 1;
+    },
+  },
+  {
+    name: "Broadsword",
+    effect: "Atk+4",
+    fn: () => {
+      charBonusAtk += 4;
+    },
+  },
+  {
+    name: "Cap",
+    effect: "Def+1",
+    fn: () => {
+      charBonusArmor += 1;
+    },
+  },
+  {
+    name: "Cheese",
+    effect: "HP+5",
+    fn: () => {
+      charBonusHP += 5;
+    },
+  },
+  {
+    name: "Club",
+    effect: "Atk+1",
+    fn: () => {
+      charBonusAtk += 1;
+    },
+  },
+  {
+    name: "Daggers",
+    effect: "Atk+2",
+    fn: () => {
+      charBonusAtk += 2;
+    },
+  },
+  {
+    name: "Gloves",
+    effect: "Def+1",
+    fn: () => {
+      charBonusArmor += 1;
+    },
+  },
+  {
+    name: "Helmet",
+    effect: "Def+2",
+    fn: () => {
+      charBonusArmor += 2;
+    },
+  },
+  {
+    name: "Knife",
+    effect: "Atk+1",
+    fn: () => {
+      charBonusAtk += 1;
+    },
+  },
+  {
+    name: "Meat",
+    effect: "HP+1",
+    fn: () => {
+      charBonusHP += 1;
+    },
+  },
+  {
+    name: "Potion",
+    effect: "AP+1",
+    fn: () => {
+      charBonusAP += 1;
+    },
+  },
+  {
+    name: "Scimitar",
+    effect: "Atk+3",
+    fn: () => {
+      charBonusAtk += 3;
+    },
+  },
+  {
+    name: "Shield",
+    effect: "Def+1",
+    fn: () => {
+      charBonusArmor += 1;
+    },
+  },
+  {
+    name: "Shirt",
+    effect: "Def+1",
+    fn: () => {
+      charBonusArmor += 1;
+    },
+  },
+  {
+    name: "Tome",
+    effect: "AP+1,Atk+1",
+    fn: () => {
+      charBonusAtk += 1;
+      charBonusAP += 1;
+    },
+  },
+  {
+    name: "Wand",
+    effect: "Atk+2",
+    fn: () => {
+      charBonusAtk += 2;
+    },
+  },
 ];
+
+let charCurrentItems = [];
+
+let charBonusAtk = 0;
+let charBonusArmor = 0;
+let charBonusHP = 0;
+let charBonusAP = 0;
 
 let charSelected = "";
 
@@ -237,7 +363,7 @@ const addMapBtnListener = (id, type) => {
 
 const mapBtnEventListenerToHome = () => {
   currentMapProgress += 1;
-  return goFight();
+  goHome();
 };
 
 const mapBtnEventListenerToForest = () => {
@@ -299,6 +425,50 @@ const goMap = () => {
   document.body.innerHTML = mapHtml;
   drawMapPath(currentMapProgress);
   addMapBtnListener(currentMapProgress, nodes[currentMapProgress]);
+};
+
+////////////// 3.1 Home
+const homeHtml = `<div class="homeContainer">
+<h2 class="homeText">
+  Home sweet home! You found some items in the storeroom. Choose one.
+</h2>
+<div class="homeItemContainer">
+  <button class="homeItem"></button>
+  <button class="homeItem"></button>
+  <button class="homeItem"></button>
+</div>
+</div>`;
+
+const rollItem = () => {
+  const randomIndex = Math.floor(Math.random() * itemArray.length);
+  return itemArray[randomIndex];
+};
+
+const pickItem = (event) => {
+  //trigger effect
+  charCurrentItems.push(event.target.id);
+  const itemIndex = itemArray.findIndex((e) => event.target.id === e.name);
+  itemArray[itemIndex].fn();
+  goMap();
+};
+
+const goHome = () => {
+  document.body.innerHTML = "";
+  document.body.innerHTML = homeHtml;
+
+  const items = document.querySelectorAll(".homeItem");
+  for (let i of items) {
+    const selectedItem = rollItem();
+    i.style.background =
+      `url("` + constructAssetUrl(selectedItem.name, `png`) + `")`;
+    i.style.backgroundRepeat = "no-repeat";
+    i.style.backgroundPosition = "top center";
+    i.style.backgroundColor = "lightgray";
+    i.setAttribute("id", `${selectedItem.name}`);
+    i.innerText = `${selectedItem.name}
+    ${selectedItem.effect}`;
+    i.addEventListener("click", pickItem);
+  }
 };
 
 ////////////////////////////////////////////////////////////////////

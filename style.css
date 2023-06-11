@@ -255,6 +255,51 @@ img {
   background-size: cover;
 }
 
+/* /////////// 3.1 Home */
+.homeContainer {
+  background: url("https://storage.cloud.google.com/rpg_game1_asset/Home_bg.png");
+  background-size: cover;
+  margin: 0 auto;
+  width: 750px;
+  height: 450px;
+  border: 4px solid gray;
+  border-radius: 12px;
+}
+
+.homeText {
+  background-color: black;
+  color: white;
+  width: 75%;
+  height: 12%;
+  text-align: center;
+  border-radius: 12px;
+  padding: 10px;
+  opacity: 0.9;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+.homeItemContainer {
+  width: 80%;
+  height: 60%;
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
+  margin-top: 50px;
+  justify-content: center;
+  gap: 25px;
+}
+
+.homeItem {
+  width: 30%;
+  height: 70%;
+  border: 3px solid black;
+  border-radius: 12px;
+  padding-top: 85px;
+  font-size: larger;
+  font-weight: 700;
+}
+
 /* ////////////////////////////////////////////////////////////
   page 4 - fights
   //////////////////////////////////////////////////////////// */
