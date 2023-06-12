@@ -314,9 +314,14 @@ img {
   font-weight: 700;
 }
 
-/* ///////////3.3 tavern */
+/* ///////////3.2 tavern */
 #tavern {
   background: url("assets/Tavern_bg.png");
+}
+
+/* ///////////3.5 village */
+#village {
+  background: url("assets/Village_bg.png");
 }
 
 /* ////////////////////////////////////////////////////////////

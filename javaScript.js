@@ -392,7 +392,7 @@ const mapBtnEventListenerToCave = () => {
 
 const mapBtnEventListenerToVillage = () => {
   currentMapProgress += 1;
-  return goFight();
+  return goVillage();
 };
 
 const mapBtnEventListenerToGraveyard = () => {
@@ -469,10 +469,7 @@ const pickItem = (event) => {
   goMap();
 };
 
-const goHome = () => {
-  document.body.innerHTML = "";
-  document.body.innerHTML = homeHtml;
-
+const generateItemChoices = () => {
   const items = document.querySelectorAll(".homeItem");
   for (let i of items) {
     const selectedItem = rollItem();
@@ -487,7 +484,13 @@ const goHome = () => {
   }
 };
 
-////////////////// 3.3 Tavern
+const goHome = () => {
+  document.body.innerHTML = "";
+  document.body.innerHTML = homeHtml;
+  generateItemChoices();
+};
+
+////////////////// 3.2 Tavern
 const tavernHtml = `<div class="homeContainer" id="tavern">
 <h2 class="homeText">
   You find a tavern offering a selection of equipments. Select one.
@@ -502,19 +505,25 @@ const tavernHtml = `<div class="homeContainer" id="tavern">
 const goTavern = () => {
   document.body.innerHTML = "";
   document.body.innerHTML = tavernHtml;
+  generateItemChoices();
+};
 
-  const items = document.querySelectorAll(".homeItem");
-  for (let i of items) {
-    const selectedItem = rollItem();
-    i.style.background = `url(assets/${selectedItem.name}.png)`;
-    i.style.backgroundRepeat = "no-repeat";
-    i.style.backgroundPosition = "top center";
-    i.style.backgroundColor = "lightgray";
-    i.setAttribute("id", `${selectedItem.name}`);
-    i.innerText = `${selectedItem.name}
-    ${selectedItem.effect}`;
-    i.addEventListener("click", pickItem);
-  }
+//////////// 3.5 Village
+const villageHtml = `<div class="homeContainer" id="village">
+<h2 class="homeText">
+  You find a tavern offering a selection of equipments. Select one.
+</h2>
+<div class="homeItemContainer">
+  <button class="homeItem"></button>
+  <button class="homeItem"></button>
+  <button class="homeItem"></button>
+</div>
+</div>`;
+
+const goVillage = () => {
+  document.body.innerHTML = "";
+  document.body.innerHTML = villageHtml;
+  generateItemChoices();
 };
 
 ////////////////////////////////////////////////////////////////////
