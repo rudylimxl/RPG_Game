@@ -537,7 +537,7 @@ const fightHtml = `
   <div class="charHealthBarContainer">
     <p>Char</p>
     <div class="healthBarBg">
-      <div class="charHealthBar" data-total="1000" data-current="1000"></div>
+      <div class="charHealthBar"></div>
     </div>
     <p class="charHealth"> a </p>
   </div>
@@ -565,7 +565,7 @@ const fightHtml = `
   <div class="enemyHealthBarContainer">
     <p>Enemy</p>
     <div class="healthBarBg">
-      <div class="enemyHealthBar" data-total="1000" data-current="1000"></div>
+      <div class="enemyHealthBar"></div>
     </div> 
     <p class="enemyHealth"> a </p>
   </div>
@@ -709,6 +709,19 @@ const renderEnemyHP = () => {
       : `${enemyCurrentHealth} / ${enemyHP}`;
 };
 
+//health bar animations
+const renderCharHealthBar = () => {
+  const charHealthBar = document.querySelector(".charHealthBar");
+  const width = (charCurrentHealth / charHP) * 100;
+  charHealthBar.style.width = width <= 0 ? `0` : `${width}%`;
+};
+
+const renderEnemyHealthBar = () => {
+  const enemyHealthBar = document.querySelector(".enemyHealthBar");
+  const width = (enemyCurrentHealth / enemyHP) * 100;
+  enemyHealthBar.style.width = width <= 0 ? `0` : `${width}%`;
+};
+
 const charAttackMove = () => {
   const enemyToon = document.querySelector("#enemyToon");
   rollAllAttackDice(); //determine multiple attack dices this turn
@@ -724,6 +737,7 @@ const charAttackMove = () => {
   } else if (enemyCurrentHealth - thisTurnAttack <= 0) {
     enemyCurrentHealth -= thisTurnAttack;
     renderEnemyHP();
+    renderEnemyHealthBar();
     enemyToon.setAttribute("src", "assets/bigdemondeath.gif");
     setTimeout(() => {
       updateBattleLog(`Char won the battle!`);
@@ -734,6 +748,7 @@ const charAttackMove = () => {
   } else {
     enemyCurrentHealth -= thisTurnAttack;
     renderEnemyHP();
+    renderEnemyHealthBar();
   }
 
   //render health bar
@@ -752,6 +767,7 @@ const charAttackMove = () => {
     charAP = 3;
     renderCharAP(charAP);
     renderCharHP();
+    renderCharHealthBar();
   }
 };
 
