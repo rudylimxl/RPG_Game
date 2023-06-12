@@ -331,7 +331,28 @@ img {
   display: flex;
   margin: 0 auto;
   width: 750px;
-  gap: 30px;
+  height: 450px;
+  border: 4px solid gray;
+  border-radius: 12px;
+  gap: 15px;
+}
+
+.charFightContainer {
+  width: 30%;
+  margin-left: 10px;
+}
+
+.enemyContainer {
+  width: 30%;
+}
+
+.battleLogContainer {
+  flex-grow: 1;
+  border: 2px dashed gray;
+  border-radius: 12px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
 }
 
 /* * {
@@ -348,4 +369,23 @@ img {
 
 .charHealthBarDisplay {
   font-weight: bolder;
+}
+
+/* healthbar */
+.healthBarBg {
+  box-sizing: border-box;
+  width: 200px;
+  height: 20px;
+  background: #ddd;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.charHealthBar,
+.enemyHealthBar {
+  height: 10px;
+  width: 100%;
+  background-color: red;
+  border-radius: 5px;
+  transition: width 0.5s linear;
 }

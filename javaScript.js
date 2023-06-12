@@ -15,7 +15,7 @@ const charUrl = {
   base: "assets/human.gif",
   Knight: "assets/knight.gif",
   Wizard: "assets/wizard.gif",
-  Orc: "assets/orc96.gif",
+  Orc: "assets/orc.gif",
 };
 
 const charDesc = {
@@ -194,6 +194,8 @@ const itemArray = [
 ];
 
 let charCurrentItems = [];
+let charHP = 20;
+let enemyHP = 40;
 
 let charBonusAtk = 0;
 let charBonusArmor = 0;
@@ -532,9 +534,11 @@ const goVillage = () => {
 const fightHtml = ` 
 <div class="fightContainer">
 <div class="charFightContainer">
-  <div class="healthBar">
+  <div class="charHealthBarContainer">
     <p>Char</p>
-    <p class="charHealthBarDisplay"> </p>
+    <div class="healthBarBg">
+      <div class="charHealthBar" data-total="1000" data-current="1000"></div>
+    </div>
     <p class="charHealth"> a </p>
   </div>
   <div class="charToon">
@@ -558,9 +562,11 @@ const fightHtml = `
   </div>
 </div>
 <div class="enemyContainer">
-  <div class="enemyHealthBar">
+  <div class="enemyHealthBarContainer">
     <p>Enemy</p>
-    <p class="enemyHealthBarDisplay"> </p>  
+    <div class="healthBarBg">
+      <div class="enemyHealthBar" data-total="1000" data-current="1000"></div>
+    </div> 
     <p class="enemyHealth"> a </p>
   </div>
   <div class="enemyToon">
@@ -578,11 +584,8 @@ const fightHtml = `
 </div>`;
 
 //////////////////////////variables
-let charMaxHealth = 20; //change
-let enemyMaxHealth = 20; //change
-
-let charCurrentHealth = 20; //change
-let enemyCurrentHealth = 40; //change
+let charCurrentHealth = charHP; //change
+let enemyCurrentHealth = enemyHP; //change
 
 let charAttack = 0;
 let charAttackArr = []; //each char attack different number of times
@@ -650,8 +653,8 @@ const setCharAttack = () => {
 };
 
 const resetCurrentHealth = () => {
-  charCurrentHealth = 20;
-  enemyCurrentHealth = 40;
+  charCurrentHealth = charHP;
+  enemyCurrentHealth = enemyHP;
 };
 
 const rollAttackDice = () => {
@@ -669,20 +672,6 @@ const rollAllAttackDice = () => {
   } else {
     charAttackArr[0] = rollAttackDice();
   }
-};
-
-const renderCharHealthBar = () => {
-  const bar = document.querySelector(".charHealthBarDisplay");
-  const num = document.querySelector(".charHealth");
-  const health = "|".repeat(charCurrentHealth);
-  bar.innerText = health;
-  num.innerText = charCurrentHealth;
-};
-
-const renderEnemyHealthBar = () => {
-  const bar = document.querySelector(".enemyHealthBarDisplay");
-  const health = "|".repeat(enemyCurrentHealth > 0 ? enemyCurrentHealth : 0);
-  bar.innerText = health;
 };
 
 const renderCharAP = (num) => {
@@ -703,37 +692,48 @@ const removeEventListener = () => {
   btn.removeEventListener("click", charAttackMove);
 };
 
-const charAttackMove = () => {
+//render HP number display
+const renderCharHP = () => {
+  const charHealthDisplay = document.querySelector(".charHealth");
+  charHealthDisplay.innerText =
+    charCurrentHealth <= 0
+      ? `0 / ${charHP}`
+      : `${charCurrentHealth} / ${charHP}`;
+};
+
+const renderEnemyHP = () => {
   const enemyHealthDisplay = document.querySelector(".enemyHealth");
+  enemyHealthDisplay.innerText =
+    enemyCurrentHealth <= 0
+      ? `0 / ${enemyHP}`
+      : `${enemyCurrentHealth} / ${enemyHP}`;
+};
+
+const charAttackMove = () => {
   const enemyToon = document.querySelector("#enemyToon");
-  console.log(charSelected);
   rollAllAttackDice(); //determine multiple attack dices this turn
-  console.log(charAttackArr);
   const thisTurnAttack = charAttackArr.reduce((total, dice) => total + dice); //compute total damage
-  console.log(thisTurnAttack);
 
   //render dices
   renderDice1(charAttackArr[0]);
-  setTimeout(renderDice2(charAttackArr[1]), 500);
-  setTimeout(renderDice3(charAttackArr[2]), 500);
+  renderDice2(charAttackArr[1]);
+  renderDice3(charAttackArr[2]);
 
   //logic for actual fight
   if (enemyCurrentHealth <= 0) {
   } else if (enemyCurrentHealth - thisTurnAttack <= 0) {
     enemyCurrentHealth -= thisTurnAttack;
-    renderEnemyHealthBar();
-    enemyHealthDisplay.innerHTML = 0;
+    renderEnemyHP();
     enemyToon.setAttribute("src", "assets/bigdemondeath.gif");
     setTimeout(() => {
       updateBattleLog(`Char won the battle!`);
       updateBattleLog(`Going back to the map...`);
     }, 1400);
-    setTimeout(goMap, 5500);
+    setTimeout(goMap, 4000);
     removeEventListener();
   } else {
     enemyCurrentHealth -= thisTurnAttack;
-    enemyHealthDisplay.innerHTML = enemyCurrentHealth;
-    renderEnemyHealthBar();
+    renderEnemyHP();
   }
 
   //render health bar
@@ -749,9 +749,9 @@ const charAttackMove = () => {
     setTimeout(() => {}, 1000);
     updateBattleLog(`Enemy attacked for 5 damage!`);
     charCurrentHealth -= 5;
-    renderCharHealthBar();
     charAP = 3;
     renderCharAP(charAP);
+    renderCharHP();
   }
 };
 
@@ -759,18 +759,15 @@ const goFight = () => {
   //previously goGame
   document.body.innerHTML = "";
   document.body.innerHTML = fightHtml;
-  const charHealthDisplay = document.querySelector(".charHealth");
-  const enemyHealthDisplay = document.querySelector(".enemyHealth");
+
   const charAtkBtn = document.querySelector("#charAtkBtn");
   charAtkBtn.addEventListener("click", charAttackMove);
+
   setDiceDisplay();
   setCharToon();
-  renderCharHealthBar();
-  renderEnemyHealthBar();
   renderCharAP(charAP);
   resetCurrentHealth();
-
-  charHealthDisplay.innerText = charCurrentHealth;
-  enemyHealthDisplay.innerText = enemyCurrentHealth;
+  renderCharHP();
+  renderEnemyHP();
   setCharAttack();
 };
