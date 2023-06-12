@@ -175,7 +175,7 @@ img {
   page 3 - maps
   //////////////////////////////////////////////////////////// */
 .mapContainer {
-  background-image: url("https://storage.cloud.google.com/rpg_game1_asset/alberto-garcia-pixel-world-map.gif");
+  background-image: url("assets/alberto-garcia-pixel-world-map.gif");
   width: 750px;
   height: 450px;
   background-size: cover;
@@ -203,7 +203,7 @@ img {
   position: absolute;
   left: 15%;
   top: 83%;
-  background: url("https://storage.cloud.google.com/rpg_game1_asset/Home.png");
+  background: url("assets/Home.png");
   background-size: cover;
 }
 
@@ -211,7 +211,7 @@ img {
   position: absolute;
   left: 11%;
   top: 60%;
-  background: url("https://storage.cloud.google.com/rpg_game1_asset/Forest.png");
+  background: url("assets/Forest.png");
   background-size: cover;
 }
 
@@ -219,7 +219,7 @@ img {
   position: absolute;
   left: 8%;
   top: 30%;
-  background: url("https://storage.cloud.google.com/rpg_game1_asset/Tavern.png");
+  background: url("assets/Tavern.png");
   background-size: cover;
 }
 
@@ -227,7 +227,7 @@ img {
   position: absolute;
   left: 45%;
   top: 6%;
-  background: url("https://storage.cloud.google.com/rpg_game1_asset/Tower.png");
+  background: url("assets/Tower.png");
   background-size: cover;
 }
 
@@ -235,7 +235,7 @@ img {
   position: absolute;
   left: 72%;
   top: 29%;
-  background: url("https://storage.cloud.google.com/rpg_game1_asset/Cave.png");
+  background: url("assets/Cave.png");
   background-size: cover;
 }
 
@@ -243,7 +243,7 @@ img {
   position: absolute;
   left: 68%;
   top: 76%;
-  background: url("https://storage.cloud.google.com/rpg_game1_asset/Village.png");
+  background: url("assets/Village.png");
   background-size: cover;
 }
 
@@ -251,7 +251,7 @@ img {
   position: absolute;
   left: 47%;
   top: 47%;
-  background: url("https://storage.cloud.google.com/rpg_game1_asset/Graveyard.png");
+  background: url("assets/Graveyard.png");
   background-size: cover;
 }
 
@@ -271,7 +271,7 @@ img {
 
 /* /////////// 3.1 Home */
 .homeContainer {
-  background: url("https://storage.cloud.google.com/rpg_game1_asset/Home_bg.png");
+  background: url("assets/Home_bg.png");
   background-size: cover;
   margin: 0 auto;
   width: 750px;
@@ -316,7 +316,7 @@ img {
 
 /* ///////////3.3 tavern */
 #tavern {
-  background: url("https://storage.cloud.google.com/rpg_game1_asset/Tavern_bg.png");
+  background: url("assets/Tavern_bg.png");
 }
 
 /* ////////////////////////////////////////////////////////////

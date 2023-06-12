@@ -1,17 +1,21 @@
 // const { message } = require("prompt");
 
 const constructAssetUrl = (name, type) => {
-  return `https://storage.cloud.google.com/rpg_game1_asset/${name}.${type}`;
+  return `url(assets/"${name}.${type})`;
+};
+
+const constructAssetPath = (name, type) => {
+  return `assets/${name}.${type}`;
 };
 
 //get start button from DOM
 const startButton = document.querySelector(".btn1");
 const charArray = ["Knight", "Wizard", "Orc"];
 const charUrl = {
-  base: "https://storage.cloud.google.com/rpg_game1_asset/human.gif",
-  Knight: "https://storage.cloud.google.com/rpg_game1_asset/knight.gif",
-  Wizard: "https://storage.cloud.google.com/rpg_game1_asset/wizard.gif",
-  Orc: "https://storage.cloud.google.com/rpg_game1_asset/orc.gif",
+  base: "assets/human.gif",
+  Knight: "assets/knight.gif",
+  Wizard: "assets/wizard.gif",
+  Orc: "assets/orc96.gif",
 };
 
 const charDesc = {
@@ -29,9 +33,9 @@ const charStats = {
 };
 
 const weaponArr = {
-  Knight: "https://storage.cloud.google.com/rpg_game1_asset/sword_.png",
-  Wizard: "https://storage.cloud.google.com/rpg_game1_asset/staff_.png",
-  Orc: "https://storage.cloud.google.com/rpg_game1_asset/hammer_.png",
+  Knight: "assets/sword_.png",
+  Wizard: "assets/staff_.png",
+  Orc: "assets/hammer_.png",
 };
 
 const weaponDesc = {
@@ -415,7 +419,7 @@ const renderItemsBar = (itemArr) => {
   const itemBar = document.querySelector(".itemBar");
   for (let i of itemArr) {
     const item = document.createElement("img");
-    const itemUrl = constructAssetUrl(i, "png");
+    const itemUrl = constructAssetPath(i, "png");
     item.setAttribute("src", itemUrl);
     item.setAttribute("title", i);
     itemBar.appendChild(item);
@@ -472,8 +476,7 @@ const goHome = () => {
   const items = document.querySelectorAll(".homeItem");
   for (let i of items) {
     const selectedItem = rollItem();
-    i.style.background =
-      `url("` + constructAssetUrl(selectedItem.name, `png`) + `")`;
+    i.style.background = `url(assets/${selectedItem.name}.png)`;
     i.style.backgroundRepeat = "no-repeat";
     i.style.backgroundPosition = "top center";
     i.style.backgroundColor = "lightgray";
@@ -503,8 +506,7 @@ const goTavern = () => {
   const items = document.querySelectorAll(".homeItem");
   for (let i of items) {
     const selectedItem = rollItem();
-    i.style.background =
-      `url("` + constructAssetUrl(selectedItem.name, `png`) + `")`;
+    i.style.background = `url(assets/${selectedItem.name}.png)`;
     i.style.backgroundRepeat = "no-repeat";
     i.style.backgroundPosition = "top center";
     i.style.backgroundColor = "lightgray";
@@ -554,7 +556,7 @@ const fightHtml = `
   </div>
   <div class="enemyToon">
     <img
-      src="https://storage.cloud.google.com/rpg_game1_asset/bigdemonleft.gif"
+      src="assets/bigdemonleft.gif"
       id="enemyToon"
     />
   </div>
@@ -583,7 +585,7 @@ let charAP = 3;
 const setCharToon = () => {
   const charToon = document.querySelector("#charToon");
   const charLower = charSelected.toLowerCase();
-  const charUrl = `https://storage.cloud.google.com/rpg_game1_asset/${charLower}.gif`;
+  const charUrl = `assets/${charLower}.gif`;
   charToon.setAttribute("src", charUrl);
 };
 
@@ -591,7 +593,7 @@ const renderDice1 = (result) => {
   const diceDisplay1 = document.querySelector("#dice1");
   const diceDisplay2 = document.querySelector("#dice2");
   const diceDisplay3 = document.querySelector("#dice3");
-  const url = `https://storage.cloud.google.com/rpg_game1_asset/d${charSelected}_${result}.gif`;
+  const url = `assets/d${charSelected}_${result}.gif`;
   diceDisplay1.setAttribute("src", ""); //to clear display of all existing dices
   diceDisplay2.setAttribute("src", "");
   diceDisplay3.setAttribute("src", "");
@@ -601,7 +603,7 @@ const renderDice1 = (result) => {
 const renderDice2 = (result) => {
   if (charSelected === "Knight" || charSelected === "Wizard") {
     const diceDisplay2 = document.querySelector("#dice2");
-    const url = `https://storage.cloud.google.com/rpg_game1_asset/d${charSelected}_${result}.gif`;
+    const url = `assets/d${charSelected}_${result}.gif`;
     diceDisplay2.setAttribute("src", url);
   }
 };
@@ -609,7 +611,7 @@ const renderDice2 = (result) => {
 const renderDice3 = (result) => {
   if (charSelected === "Wizard") {
     const diceDisplay3 = document.querySelector("#dice3");
-    const url = `https://storage.cloud.google.com/rpg_game1_asset/d${charSelected}_${result}.gif`;
+    const url = `assets/d${charSelected}_${result}.gif`;
     diceDisplay3.setAttribute("src", url);
   }
 };
@@ -619,32 +621,14 @@ const setDiceDisplay = () => {
   const diceDisplay2 = document.querySelector("#dice2");
   const diceDisplay3 = document.querySelector("#dice3");
   if (charSelected === "Knight") {
-    diceDisplay1.setAttribute(
-      "src",
-      "https://storage.cloud.google.com/rpg_game1_asset/dKnight_.gif"
-    );
-    diceDisplay2.setAttribute(
-      "src",
-      "https://storage.cloud.google.com/rpg_game1_asset/dKnight_.gif"
-    );
+    diceDisplay1.setAttribute("src", "assets/dKnight_.gif");
+    diceDisplay2.setAttribute("src", "assets/dKnight_.gif");
   } else if (charSelected === "Wizard") {
-    diceDisplay1.setAttribute(
-      "src",
-      "https://storage.cloud.google.com/rpg_game1_asset/dWizard_.gif"
-    );
-    diceDisplay2.setAttribute(
-      "src",
-      "https://storage.cloud.google.com/rpg_game1_asset/dWizard_.gif"
-    );
-    diceDisplay3.setAttribute(
-      "src",
-      "https://storage.cloud.google.com/rpg_game1_asset/dWizard_.gif"
-    );
+    diceDisplay1.setAttribute("src", "assets/dWizard_.gif");
+    diceDisplay2.setAttribute("src", "assets/dWizard_.gif");
+    diceDisplay3.setAttribute("src", "assets/dWizard_.gif");
   } else {
-    diceDisplay1.setAttribute(
-      "src",
-      "https://storage.cloud.google.com/rpg_game1_asset/dOrc_.gif"
-    );
+    diceDisplay1.setAttribute("src", "assets/dOrc_.gif");
   }
 };
 
@@ -730,10 +714,7 @@ const charAttackMove = () => {
     enemyCurrentHealth -= thisTurnAttack;
     renderEnemyHealthBar();
     enemyHealthDisplay.innerHTML = 0;
-    enemyToon.setAttribute(
-      "src",
-      "https://storage.cloud.google.com/rpg_game1_asset/bigdemondeath.gif"
-    );
+    enemyToon.setAttribute("src", "assets/bigdemondeath.gif");
     setTimeout(() => {
       updateBattleLog(`Char won the battle!`);
       updateBattleLog(`Going back to the map...`);
