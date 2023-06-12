@@ -202,6 +202,15 @@ let charBonusArmor = 0;
 let charBonusHP = 0;
 let charBonusAP = 0;
 
+let charCurrentHealth = charHP;
+let enemyCurrentHealth = enemyHP;
+
+let charAttack = 0;
+let charAttackArr = []; //each char attack different number of times
+let enemyAttack = 3; //change
+
+let charAP = 3;
+
 let charSelected = "";
 
 //change char callback fn
@@ -374,7 +383,7 @@ const mapBtnEventListenerToHome = () => {
 
 const mapBtnEventListenerToForest = () => {
   currentMapProgress += 1;
-  return goFight();
+  return goForest();
 };
 
 const mapBtnEventListenerToTavern = () => {
@@ -384,12 +393,12 @@ const mapBtnEventListenerToTavern = () => {
 
 const mapBtnEventListenerToTower = () => {
   currentMapProgress += 1;
-  return goFight();
+  return goTower();
 };
 
 const mapBtnEventListenerToCave = () => {
   currentMapProgress += 1;
-  return goFight();
+  return goCave();
 };
 
 const mapBtnEventListenerToVillage = () => {
@@ -399,7 +408,7 @@ const mapBtnEventListenerToVillage = () => {
 
 const mapBtnEventListenerToGraveyard = () => {
   currentMapProgress += 1;
-  return goFight();
+  return goGraveyard();
 };
 
 ///// map HTML
@@ -446,11 +455,9 @@ const goMap = () => {
   renderItemsBar(charCurrentItems);
 };
 
-////////////// 3.1 Home
+////////////// 3.0 Home
 const homeHtml = `<div class="homeContainer">
-<h2 class="homeText">
-  Home sweet home! You found some items in the storeroom. Choose one.
-</h2>
+<h2 class="homeText"></h2>
 <div class="homeItemContainer">
   <button class="homeItem"></button>
   <button class="homeItem"></button>
@@ -486,46 +493,60 @@ const generateItemChoices = () => {
   }
 };
 
-const goHome = () => {
+const generateItemHtml = (input) => {
   document.body.innerHTML = "";
   document.body.innerHTML = homeHtml;
+  const message = document.querySelector(".homeText");
+  message.innerText = input;
   generateItemChoices();
+};
+
+const goHome = () => {
+  generateItemHtml(
+    "Home sweet home! You found some items in the storeroom. Choose one."
+  );
+};
+
+////////////////// 3.1 Forest
+const generateFightHtml = (location) => {
+  document.body.innerHTML = "";
+  document.body.innerHTML = fightHtml;
+  const fightContainer = document.querySelector(".fightContainer");
+  fightContainer.setAttribute("id", `${location}`);
+  initializeFight();
+};
+
+const goForest = () => {
+  generateFightHtml("forest");
 };
 
 ////////////////// 3.2 Tavern
-const tavernHtml = `<div class="homeContainer" id="tavern">
-<h2 class="homeText">
-  You find a tavern offering a selection of equipments. Select one.
-</h2>
-<div class="homeItemContainer">
-  <button class="homeItem"></button>
-  <button class="homeItem"></button>
-  <button class="homeItem"></button>
-</div>
-</div>`;
-
 const goTavern = () => {
-  document.body.innerHTML = "";
-  document.body.innerHTML = tavernHtml;
-  generateItemChoices();
+  generateItemHtml(
+    "You find a tavern offering a selection of equipments. Select one."
+  );
+};
+
+////////////////// 3.3 Tower
+const goTower = () => {
+  generateFightHtml("tower");
+};
+
+////////////////// 3.4 Cave
+const goCave = () => {
+  generateFightHtml("cave");
 };
 
 //////////// 3.5 Village
-const villageHtml = `<div class="homeContainer" id="village">
-<h2 class="homeText">
-  You find a tavern offering a selection of equipments. Select one.
-</h2>
-<div class="homeItemContainer">
-  <button class="homeItem"></button>
-  <button class="homeItem"></button>
-  <button class="homeItem"></button>
-</div>
-</div>`;
-
 const goVillage = () => {
-  document.body.innerHTML = "";
-  document.body.innerHTML = villageHtml;
-  generateItemChoices();
+  generateItemHtml(
+    "The friendly villagers offered items to help you on your journey. Select one."
+  );
+};
+
+////////////////// 3.6 Graveyard
+const goGraveyard = () => {
+  generateFightHtml("graveyard");
 };
 
 ////////////////////////////////////////////////////////////////////
@@ -584,14 +605,6 @@ const fightHtml = `
 </div>`;
 
 //////////////////////////variables
-let charCurrentHealth = charHP; //change
-let enemyCurrentHealth = enemyHP; //change
-
-let charAttack = 0;
-let charAttackArr = []; //each char attack different number of times
-let enemyAttack = 3; //change
-
-let charAP = 3;
 
 ////////////////////////////functions
 const setCharToon = () => {
@@ -722,6 +735,20 @@ const renderEnemyHealthBar = () => {
   enemyHealthBar.style.width = width <= 0 ? `0` : `${width}%`;
 };
 
+//initialize fight
+const initializeFight = () => {
+  const charAtkBtn = document.querySelector("#charAtkBtn");
+  charAtkBtn.addEventListener("click", charAttackMove);
+  setDiceDisplay();
+  setCharToon();
+  renderCharAP(charAP);
+  resetCurrentHealth();
+  renderCharHP();
+  renderEnemyHP();
+  setCharAttack();
+};
+
+//attack button
 const charAttackMove = () => {
   const enemyToon = document.querySelector("#enemyToon");
   rollAllAttackDice(); //determine multiple attack dices this turn
@@ -775,15 +802,5 @@ const goFight = () => {
   //previously goGame
   document.body.innerHTML = "";
   document.body.innerHTML = fightHtml;
-
-  const charAtkBtn = document.querySelector("#charAtkBtn");
-  charAtkBtn.addEventListener("click", charAttackMove);
-
-  setDiceDisplay();
-  setCharToon();
-  renderCharAP(charAP);
-  resetCurrentHealth();
-  renderCharHP();
-  renderEnemyHP();
-  setCharAttack();
+  initializeFight();
 };

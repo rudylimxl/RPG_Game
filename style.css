@@ -269,7 +269,7 @@ img {
 .itemIcon {
 }
 
-/* /////////// 3.1 Home */
+/* /////////// 3.0 Home */
 .homeContainer {
   background: url("assets/Home_bg.png");
   background-size: cover;
@@ -314,14 +314,34 @@ img {
   font-weight: 700;
 }
 
+/* ///////////3.1 forest */
+#forest {
+  background: url("assets/Forest_bg.png");
+}
+
 /* ///////////3.2 tavern */
 #tavern {
   background: url("assets/Tavern_bg.png");
 }
 
+/* ///////////3.3 tower */
+#tower {
+  background: url("assets/Tower_bg.png");
+}
+
+/* ///////////3.4 cave */
+#cave {
+  background: url("assets/Cave_bg.png");
+}
+
 /* ///////////3.5 village */
 #village {
   background: url("assets/Village_bg.png");
+}
+
+/* ///////////3.6 graveyard */
+#graveyard {
+  background: url("assets/Graveyard_bg.png");
 }
 
 /* ////////////////////////////////////////////////////////////
@@ -340,10 +360,20 @@ img {
 .charFightContainer {
   width: 30%;
   margin-left: 10px;
+  background-color: rgba(205, 205, 205, 0.55);
+  margin-top: 10px;
+  border-radius: 12px;
+  padding-left: 10px;
+  margin-bottom: 10px;
 }
 
 .enemyContainer {
   width: 30%;
+  background-color: rgba(205, 205, 205, 0.55);
+  height: fit-content;
+  margin-top: 10px;
+  border-radius: 12px;
+  padding-left: 10px;
 }
 
 .battleLogContainer {
@@ -353,6 +383,7 @@ img {
   margin-top: 10px;
   margin-bottom: 10px;
   margin-right: 10px;
+  background-color: rgba(205, 205, 205, 0.55);
 }
 
 /* * {
@@ -360,7 +391,7 @@ img {
   } */
 
 .dice {
-  width: 100px;
+  width: 66px;
 }
 
 .enemyHealthBarDisplay {
