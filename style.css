@@ -377,7 +377,7 @@ img {
 }
 
 .battleLogContainer {
-  flex-grow: 1;
+  width: 30%;
   border: 2px dashed gray;
   border-radius: 12px;
   margin-top: 10px;

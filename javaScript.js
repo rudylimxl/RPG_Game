@@ -1,4 +1,9 @@
-// const { message } = require("prompt");
+// todo:
+// 1 enemy logic
+// 2 refactor functions
+// 3 organization > split to different js files?
+// 4 music
+// 5 stretch goal: mobile layout
 
 const constructAssetUrl = (name, type) => {
   return `url(assets/"${name}.${type})`;
@@ -193,25 +198,40 @@ const itemArray = [
   },
 ];
 
+////enemy list and stats
+const normalEnemiesArr = ["Demon", "Lizard", "Goblin", "Masked"];
+const bossArr = ["Bigdemon", "Zombie", "Ogre"];
+
+let currentEnemy = "";
+let enemyHP = 40;
+let enemyAttack = 5;
+const enemyHpScaling = [1, 1.2, 1.4, 1.5, 1.8, 2, 2.5];
+const enemyAtkScaling = [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6];
+
+//initialize enemy fight stat
+let enemyCurrentHealth = 0;
+let enemyCurentAtk = 0;
+
+///char stats
 let charCurrentItems = [];
 let charHP = 20;
-let enemyHP = 40;
 
 let charBonusAtk = 0;
 let charBonusArmor = 0;
 let charBonusHP = 0;
 let charBonusAP = 0;
 
-let charCurrentHealth = charHP;
-let enemyCurrentHealth = enemyHP;
-
 let charAttack = 0;
 let charAttackArr = []; //each char attack different number of times
-let enemyAttack = 3; //change
 
 let charAP = 3;
 
 let charSelected = "";
+
+//initialize char fight stats
+let charCurrentHealth = charHP + charBonusHP;
+let charCurrentBonusAtk = charBonusAtk;
+let charDefThisTurn = charBonusArmor;
 
 //change char callback fn
 const changeChar = (event) => {
@@ -552,66 +572,31 @@ const goGraveyard = () => {
 ////////////////////////////////////////////////////////////////////
 //page 4 - fights
 ////////////////////////////////////////////////////////////////////
-const fightHtml = ` 
-<div class="fightContainer">
-<div class="charFightContainer">
-  <div class="charHealthBarContainer">
-    <p>Char</p>
-    <div class="healthBarBg">
-      <div class="charHealthBar"></div>
-    </div>
-    <p class="charHealth"> a </p>
-  </div>
-  <div class="charToon">
-    <img
-      src=""
-      id="charToon"
-    />
-  </div>
-  <div class="cardContainer">
-    <button id="charAtkBtn">Attack</button>
-    <button id="charDefBtn">Defend</button>
-    <button id="charSklBtn">Skill</button>
-  </div>
-  <div class="apBar">
-    <p class = "charAP"></p>
-  </div>
-  <div class="diceContainer">
-    <img src="" class="dice" id="dice1">
-    <img src="" class="dice" id="dice2">
-    <img src="" class="dice" id="dice3">
-  </div>
-</div>
-<div class="enemyContainer">
-  <div class="enemyHealthBarContainer">
-    <p>Enemy</p>
-    <div class="healthBarBg">
-      <div class="enemyHealthBar"></div>
-    </div> 
-    <p class="enemyHealth"> a </p>
-  </div>
-  <div class="enemyToon">
-    <img
-      src="assets/bigdemonleft.gif"
-      id="enemyToon"
-    />
-  </div>
-</div>
-<div class="battleLogContainer">
-  <ul class="battleLog"> 
-    <li> Battle Started! </li>
-  </ul>
-</div>
-</div>`;
-
-//////////////////////////variables
 
 ////////////////////////////functions
+const randomizeEnemy = () => {
+  const randomIndex = Math.floor(Math.random() * normalEnemiesArr.length);
+  currentEnemy = normalEnemiesArr[randomIndex];
+  enemyCurrentHealth = Math.floor(enemyHP * enemyHpScaling[currentMapProgress]);
+  enemyCurrentAtk = Math.ceil(
+    enemyAttack * enemyAtkScaling[currentMapProgress]
+  );
+};
+
 const setCharToon = () => {
   const charToon = document.querySelector("#charToon");
   const charLower = charSelected.toLowerCase();
   const charUrl = `assets/${charLower}.gif`;
   charToon.setAttribute("src", charUrl);
+};
+
+const setEnemyToon = () => {
+  const enemyToon = document.querySelector("#enemyToon");
+  const enemyLower = currentEnemy.toLowerCase() + "left";
+  const enemyUrl = `assets/${enemyLower}.gif`;
+  enemyToon.setAttribute("src", enemyUrl);
+  const enemyName = document.querySelector("#enemyName");
+  enemyName.innerText = currentEnemy;
 };
 
 const renderDice1 = (result) => {
@@ -741,6 +726,8 @@ const initializeFight = () => {
   charAtkBtn.addEventListener("click", charAttackMove);
   setDiceDisplay();
   setCharToon();
+  randomizeEnemy();
+  setEnemyToon();
   renderCharAP(charAP);
   resetCurrentHealth();
   renderCharHP();
