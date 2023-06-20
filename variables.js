@@ -214,6 +214,7 @@ let charBonusHP = 0;
 let charBonusAP = 0;
 
 let charAttack = 0;
+let charDef = 3;
 let charAttackArr = []; //each char attack different number of times
 
 let charAP = 3;
@@ -223,4 +224,6 @@ let charSelected = "";
 //initialize char fight stats
 let charCurrentHealth = charHP + charBonusHP;
 let charCurrentBonusAtk = charBonusAtk;
+let charCurrentDef = charDef + charBonusArmor;
 let charDefThisTurn = 0;
+let charAtkThisTurn = 0;

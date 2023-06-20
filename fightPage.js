@@ -118,6 +118,7 @@ const updateBattleLog = (message) => {
   const add = document.createElement("li");
   add.innerText = message;
   log.appendChild(add);
+  log.scrollTop = log.scrollHeight;
 };
 
 const removeEventListener = () => {
@@ -156,10 +157,38 @@ const renderEnemyHealthBar = () => {
   enemyHealthBar.style.width = width <= 0 ? `0` : `${width}%`;
 };
 
-//initialize fight
-const initializeFight = () => {
+const addButtonListeners = () => {
   const charAtkBtn = document.querySelector("#charAtkBtn");
   charAtkBtn.addEventListener("click", charAttackMove);
+  const charDefBtn = document.querySelector("#charDefBtn");
+  charDefBtn.addEventListener("click", charDefendMove);
+  const charEndTurnBtn = document.querySelector("#charEndTurnBtn");
+  charEndTurnBtn.addEventListener("click", charEndTurn);
+};
+
+const renderCharDef = () => {
+  const def = document.querySelector(".charDef");
+  def.innerText = charDefThisTurn;
+};
+
+const resetCharDef = () => {
+  charDefThisTurn = 0;
+  renderCharDef;
+};
+
+const renderCharAtk = () => {
+  const atk = document.querySelector(".charAtk");
+  atk.innerText = charAtkThisTurn;
+};
+
+const resetCharAtk = () => {
+  thisTurnAttack = 0;
+  renderCharAtk;
+};
+
+//initialize fight
+const initializeFight = () => {
+  addButtonListeners();
   setDiceDisplay();
   setCharToon();
   randomizeEnemy();
@@ -169,25 +198,66 @@ const initializeFight = () => {
   renderCharHP();
   renderEnemyHP();
   setCharAttack();
+  resetCharDef();
 };
 
 //attack button
 const charAttackMove = () => {
+  if (charAP > 0) {
+    charAP -= 1;
+    renderCharAP(charAP);
+    rollAllAttackDice(); //determine multiple attack dices this turn
+    const thisRollAttack = charAttackArr.reduce((total, dice) => total + dice); //compute total damage
+    charAtkThisTurn += thisRollAttack;
+
+    //render dices
+    renderDice1(charAttackArr[0]);
+    renderDice2(charAttackArr[1]);
+    renderDice3(charAttackArr[2]);
+
+    //render
+    renderCharAtk();
+    updateBattleLog(
+      `Char rolls ${thisRollAttack} points, next attack will deal ${charAtkThisTurn} damage!`
+    );
+  } else {
+  }
+};
+
+//defend button
+const charDefendMove = () => {
+  if (charAP > 0) {
+    charAP -= 1;
+    renderCharAP(charAP);
+    charDefThisTurn += charCurrentDef;
+    updateBattleLog(`Char defends, for total of ${charDefThisTurn} points!`);
+    renderCharDef();
+  } else {
+  }
+};
+
+//end turn button
+const charEndTurn = () => {
   const enemyToon = document.querySelector("#enemyToon");
-  rollAllAttackDice(); //determine multiple attack dices this turn
-  const thisTurnAttack = charAttackArr.reduce((total, dice) => total + dice); //compute total damage
-
-  //render dices
-  renderDice1(charAttackArr[0]);
-  renderDice2(charAttackArr[1]);
-  renderDice3(charAttackArr[2]);
-
-  //logic for actual fight
+  updateBattleLog(`Resolving this turn..`);
+  updateBattleLog(`Char attacks for ${charAtkThisTurn} damage!`);
+  const enemyDamage = 5 > charDefThisTurn ? 5 - charDefThisTurn : 0;
+  updateBattleLog(
+    `Enemy attacks for ${enemyDamage} damage (reduced by ${charDefThisTurn} points of defense)`
+  );
+  charCurrentHealth -= enemyDamage;
+  renderCharHP();
+  renderCharHealthBar();
+  charAP = 3;
+  renderCharAP(charAP);
+  charDefThisTurn = 0;
+  renderCharDef();
+  enemyCurrentHealth -= charAtkThisTurn;
+  renderEnemyHP();
+  renderEnemyHealthBar();
+  charAtkThisTurn = 0;
+  renderCharAtk();
   if (enemyCurrentHealth <= 0) {
-  } else if (enemyCurrentHealth - thisTurnAttack <= 0) {
-    enemyCurrentHealth -= thisTurnAttack;
-    renderEnemyHP();
-    renderEnemyHealthBar();
     enemyToon.setAttribute("src", "assets/bigdemondeath.gif");
     setTimeout(() => {
       updateBattleLog(`Char won the battle!`);
@@ -195,35 +265,7 @@ const charAttackMove = () => {
     }, 1400);
     setTimeout(goMap, 4000);
     removeEventListener();
-  } else {
-    enemyCurrentHealth -= thisTurnAttack;
-    renderEnemyHP();
-    renderEnemyHealthBar();
   }
-
-  //render health bar
-  if (charAP > 1) {
-    charAP -= 1;
-    renderCharAP(charAP);
-    updateBattleLog(`Char attacked for ${thisTurnAttack} total damage!`);
-  } else {
-    charAP -= 1;
-    renderCharAP(charAP);
-    updateBattleLog(`Char attacked for ${thisTurnAttack} total damage!`);
-    //enemyAttack
-    setTimeout(() => {}, 1000);
-    updateBattleLog(`Enemy attacked for 5 damage!`);
-    charCurrentHealth -= 5;
-    charAP = 3;
-    renderCharAP(charAP);
-    renderCharHP();
-    renderCharHealthBar();
-  }
-};
-
-//defend button
-const charDefendMove = () => {
-  //a
 };
 
 const goFight = () => {
