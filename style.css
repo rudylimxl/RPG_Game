@@ -431,10 +431,13 @@ img {
   flex-direction: row;
   gap: 10px;
   align-items: center;
+  margin-bottom: 10px;
 }
 
 .charDef,
-.charAtk {
+.charAtk,
+.enemyAtk,
+.enemyDef {
   text-align: center;
   background: url(assets/defense.png);
   height: 28px;
@@ -445,7 +448,8 @@ img {
   color: antiquewhite;
 }
 
-.charAtk {
+.charAtk,
+.enemyAtk {
   background: url(assets/attack.png);
   background-repeat: no-repeat;
 }

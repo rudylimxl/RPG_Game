@@ -46,6 +46,10 @@ const fightHtml = `
       id="enemyToon"
     />
   </div>
+  <div class="charStatusContainer">
+    <div class="enemyAtk">0</div>
+    <div class="enemyDef">0</div>
+  </div>
 </div>
 <div class="battleLogContainer">
   <ul class="battleLog"> 

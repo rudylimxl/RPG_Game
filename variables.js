@@ -16,10 +16,10 @@ const charDesc = {
 
 const charStats = {
   Knight:
-    "<tr> <th>Stat</th> <th>Value</th> </tr> <tr> <td>HP</td> <td>70</td> </tr> <tr> <td>Def</td> <td>4</td> </tr> <tr> <td>Luck</td> <td>15</td> </tr>",
+    "<tr> <th>Stat</th> <th>Value</th> </tr> <tr> <td>HP</td> <td>25</td> </tr> <tr> <td>Def</td> <td>3</td> </tr> <tr> <td>Luck</td> <td>15</td> </tr>",
   Wizard:
-    "<tr> <th>Stat</th> <th>Value</th> </tr> <tr> <td>HP</td> <td>50</td> </tr> <tr> <td>Def</td> <td>1</td> </tr> <tr> <td>Luck</td> <td>35</td> </tr>",
-  Orc: "<tr> <th>Stat</th> <th>Value</th> </tr> <tr> <td>HP</td> <td>110</td> </tr> <tr> <td>Def</td> <td>2</td> </tr> <tr> <td>Luck</td> <td>5</td> </tr>",
+    "<tr> <th>Stat</th> <th>Value</th> </tr> <tr> <td>HP</td> <td>20</td> </tr> <tr> <td>Def</td> <td>2</td> </tr> <tr> <td>Luck</td> <td>35</td> </tr>",
+  Orc: "<tr> <th>Stat</th> <th>Value</th> </tr> <tr> <td>HP</td> <td>30</td> </tr> <tr> <td>Def</td> <td>1</td> </tr> <tr> <td>Luck</td> <td>5</td> </tr>",
 };
 
 const weaponArr = {
@@ -185,24 +185,30 @@ const itemArray = [
 
 ////enemy list and stats
 const normalEnemiesArr = [
-  "Demon",
-  "Lizard",
-  "Goblin",
-  "Masked",
+  { name: "Demon", HP: 40, Atk: 5 },
+  { name: "Lizard", HP: 30, Atk: 6 },
+  { name: "Goblin", HP: 30, Atk: 7 },
+  { name: "Masked", HP: 25, Atk: 8 },
   "Bigdemon",
   "Zombie",
   "Ogre",
 ];
 
+const enemyActions = [
+  { atk: 1, def: 0 },
+  { atk: 0.5, def: 0.5 },
+  { atk: 0.6, def: 0.7 },
+];
+
 let currentEnemy = "";
 let enemyHP = 40;
 let enemyAttack = 5;
-const enemyHpScaling = [1, 1.2, 1.4, 1.5, 1.8, 2, 2.5];
-const enemyAtkScaling = [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6];
+const enemyHpScaling = [1, 1, 1, 1.4, 1.4, 1.5, 2, 2];
+const enemyAtkScaling = [1, 1, 1, 1.2, 1.3, 1.4, 1.5, 1.6];
 
 //initialize enemy fight stat
 let enemyCurrentHealth = 0;
-let enemyCurentAtk = 0;
+let enemyCurrentAtk = 0;
 
 ///char stats
 let charCurrentItems = [];
@@ -222,8 +228,11 @@ let charAP = 3;
 let charSelected = "";
 
 //initialize char fight stats
+let charFightMaxHP = charHP + charBonusHP; //only used to display max health value
 let charCurrentHealth = charHP + charBonusHP;
 let charCurrentBonusAtk = charBonusAtk;
 let charCurrentDef = charDef + charBonusArmor;
+let charCurrentBonusDef = charBonusArmor;
+let charFightAP = charAP + charBonusAP;
 let charDefThisTurn = 0;
 let charAtkThisTurn = 0;

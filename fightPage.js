@@ -13,7 +13,7 @@
 const randomizeEnemy = () => {
   const randomIndex = Math.floor(Math.random() * normalEnemiesArr.length);
   currentEnemy = normalEnemiesArr[randomIndex];
-  enemyCurrentHealth = Math.floor(enemyHP * enemyHpScaling[currentMapProgress]);
+  enemyHP = Math.floor(enemyHP * enemyHpScaling[currentMapProgress]);
   enemyCurrentAtk = Math.ceil(
     enemyAttack * enemyAtkScaling[currentMapProgress]
   );
@@ -132,8 +132,8 @@ const renderCharHP = () => {
   const charHealthDisplay = document.querySelector(".charHealth");
   charHealthDisplay.innerText =
     charCurrentHealth <= 0
-      ? `0 / ${charHP}`
-      : `${charCurrentHealth} / ${charHP}`;
+      ? `0 / ${charFightMaxHP}`
+      : `${charCurrentHealth} / ${charFightMaxHP}`;
 };
 
 const renderEnemyHP = () => {
@@ -168,44 +168,57 @@ const addButtonListeners = () => {
 
 const renderCharDef = () => {
   const def = document.querySelector(".charDef");
-  def.innerText = charDefThisTurn;
+  def.innerText = charDefThisTurn + charCurrentBonusDef;
 };
 
 const resetCharDef = () => {
-  charDefThisTurn = 0;
+  charDefThisTurn = charCurrentDef;
   renderCharDef;
 };
 
 const renderCharAtk = () => {
   const atk = document.querySelector(".charAtk");
-  atk.innerText = charAtkThisTurn;
+  atk.innerText = charAtkThisTurn + charCurrentBonusAtk;
 };
 
 const resetCharAtk = () => {
-  thisTurnAttack = 0;
+  thisTurnAttack = charCurrentBonusAtk;
   renderCharAtk;
+};
+
+const initializeFightStats = () => {
+  charFightMaxHP = charHP + charBonusHP; //only used to display max health value
+  charCurrentHealth = charHP + charBonusHP;
+  charCurrentBonusAtk = charBonusAtk;
+  charCurrentDef = charDef;
+  charCurrentBonusDef = charBonusArmor;
+  charFightAP = charAP + charBonusAP;
+  charDefThisTurn = 0;
+  charAtkThisTurn = 0;
+  enemyCurrentHealth = enemyHP;
 };
 
 //initialize fight
 const initializeFight = () => {
   addButtonListeners();
+  randomizeEnemy();
+  initializeFightStats();
   setDiceDisplay();
   setCharToon();
-  randomizeEnemy();
   setEnemyToon();
-  renderCharAP(charAP);
-  resetCurrentHealth();
+  renderCharAP(charFightAP);
   renderCharHP();
   renderEnemyHP();
+  renderCharAtk();
+  renderCharDef();
   setCharAttack();
-  resetCharDef();
 };
 
 //attack button
 const charAttackMove = () => {
-  if (charAP > 0) {
-    charAP -= 1;
-    renderCharAP(charAP);
+  if (charFightAP > 0) {
+    charFightAP -= 1;
+    renderCharAP(charFightAP);
     rollAllAttackDice(); //determine multiple attack dices this turn
     const thisRollAttack = charAttackArr.reduce((total, dice) => total + dice); //compute total damage
     charAtkThisTurn += thisRollAttack;
@@ -218,7 +231,9 @@ const charAttackMove = () => {
     //render
     renderCharAtk();
     updateBattleLog(
-      `Char rolls ${thisRollAttack} points, next attack will deal ${charAtkThisTurn} damage!`
+      `Char rolls ${thisRollAttack} points, next attack will deal ${
+        charAtkThisTurn + charCurrentBonusAtk
+      } damage!`
     );
   } else {
   }
@@ -226,11 +241,15 @@ const charAttackMove = () => {
 
 //defend button
 const charDefendMove = () => {
-  if (charAP > 0) {
-    charAP -= 1;
-    renderCharAP(charAP);
+  if (charFightAP > 0) {
+    charFightAP -= 1;
+    renderCharAP(charFightAP);
     charDefThisTurn += charCurrentDef;
-    updateBattleLog(`Char defends, for total of ${charDefThisTurn} points!`);
+    updateBattleLog(
+      `Char defends, for total of ${
+        charDefThisTurn + charCurrentBonusDef
+      } points!`
+    );
     renderCharDef();
   } else {
   }
@@ -248,7 +267,7 @@ const charEndTurn = () => {
   charCurrentHealth -= enemyDamage;
   renderCharHP();
   renderCharHealthBar();
-  charAP = 3;
+  charFightAP = 3;
   renderCharAP(charAP);
   charDefThisTurn = 0;
   renderCharDef();
