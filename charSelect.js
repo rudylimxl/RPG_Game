@@ -31,6 +31,17 @@ const changeChar = (event) => {
   const charT = document.querySelector(".charTable");
   const charTHTML = charStats[`${charSelected}`];
   charT.innerHTML = charTHTML;
+
+  if (event.target.id === "Wizard") {
+    charHP = 20;
+    charDef = 2;
+  } else if (event.target.id === "Knight") {
+    charHP = 25;
+    charDef = 3;
+  } else if (event.target.id === "Orc") {
+    charHP = 30;
+    charDef = 1;
+  }
 };
 
 //startGame callback fn

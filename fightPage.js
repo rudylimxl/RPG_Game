@@ -14,9 +14,14 @@ const randomizeEnemy = () => {
   const randomIndex = Math.floor(Math.random() * normalEnemiesArr.length);
   currentEnemy = normalEnemiesArr[randomIndex];
   enemyHP = Math.floor(enemyHP * enemyHpScaling[currentMapProgress]);
-  enemyCurrentAtk = Math.ceil(
-    enemyAttack * enemyAtkScaling[currentMapProgress]
-  );
+  enemyAtk = Math.ceil(enemyAtk * enemyAtkScaling[currentMapProgress]);
+  enemyDef = Math.ceil(enemyDef * enemyDefScaling[currentMapProgress]);
+};
+
+const randomizeEnemyAction = () => {
+  const randomIndex = Math.floor(Math.random() * enemyActionsArr.length);
+  enemyAtkThisTurn = Math.ceil(enemyActionsArr[randomIndex].atk * enemyAtk);
+  enemyDefThisTurn = Math.ceil(enemyActionsArr[randomIndex].def * enemyDef);
 };
 
 const setCharToon = () => {
@@ -147,7 +152,7 @@ const renderEnemyHP = () => {
 //health bar animations
 const renderCharHealthBar = () => {
   const charHealthBar = document.querySelector(".charHealthBar");
-  const width = (charCurrentHealth / charHP) * 100;
+  const width = (charCurrentHealth / charFightMaxHP) * 100;
   charHealthBar.style.width = width <= 0 ? `0` : `${width}%`;
 };
 
@@ -186,6 +191,16 @@ const resetCharAtk = () => {
   renderCharAtk;
 };
 
+const renderEnemyAtk = () => {
+  const atk = document.querySelector(".enemyAtk");
+  atk.innerText = enemyAtkThisTurn;
+};
+
+const renderEnemyDef = () => {
+  const def = document.querySelector(".enemyDef");
+  def.innerText = enemyDefThisTurn;
+};
+
 const initializeFightStats = () => {
   charFightMaxHP = charHP + charBonusHP; //only used to display max health value
   charCurrentHealth = charHP + charBonusHP;
@@ -202,6 +217,7 @@ const initializeFightStats = () => {
 const initializeFight = () => {
   addButtonListeners();
   randomizeEnemy();
+  randomizeEnemyAction();
   initializeFightStats();
   setDiceDisplay();
   setCharToon();
@@ -212,6 +228,8 @@ const initializeFight = () => {
   renderCharAtk();
   renderCharDef();
   setCharAttack();
+  renderEnemyAtk();
+  renderEnemyDef();
 };
 
 //attack button
@@ -257,12 +275,21 @@ const charDefendMove = () => {
 
 //end turn button
 const charEndTurn = () => {
-  const enemyToon = document.querySelector("#enemyToon");
   updateBattleLog(`Resolving this turn..`);
-  updateBattleLog(`Char attacks for ${charAtkThisTurn} damage!`);
-  const enemyDamage = 5 > charDefThisTurn ? 5 - charDefThisTurn : 0;
+  const charTotalAtkThisTurn = charAtkThisTurn + charBonusAtk;
+  const charDamage =
+    charTotalAtkThisTurn > enemyDefThisTurn
+      ? charTotalAtkThisTurn - enemyDefThisTurn
+      : 0;
   updateBattleLog(
-    `Enemy attacks for ${enemyDamage} damage (reduced by ${charDefThisTurn} points of defense)`
+    `Char attacks for ${charTotalAtkThisTurn} damage (reduced by enemy's ${enemyDefThisTurn} defense)`
+  );
+  const enemyDamage =
+    enemyAtkThisTurn > charDefThisTurn + charBonusArmor
+      ? enemyAtkThisTurn - (charDefThisTurn + charBonusArmor)
+      : 0;
+  updateBattleLog(
+    `Enemy attacks for ${enemyDamage} damage (reduced by ${charDefThisTurn} defense)`
   );
   charCurrentHealth -= enemyDamage;
   renderCharHP();
@@ -271,12 +298,16 @@ const charEndTurn = () => {
   renderCharAP(charAP);
   charDefThisTurn = 0;
   renderCharDef();
-  enemyCurrentHealth -= charAtkThisTurn;
+  enemyCurrentHealth -= charDamage;
   renderEnemyHP();
   renderEnemyHealthBar();
   charAtkThisTurn = 0;
   renderCharAtk();
+  randomizeEnemyAction();
+  renderEnemyAtk();
+  renderEnemyDef();
   if (enemyCurrentHealth <= 0) {
+    const enemyToon = document.querySelector("#enemyToon");
     enemyToon.setAttribute("src", "assets/bigdemondeath.gif");
     setTimeout(() => {
       updateBattleLog(`Char won the battle!`);
