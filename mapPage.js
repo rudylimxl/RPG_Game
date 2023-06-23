@@ -67,37 +67,51 @@ const addMapBtnListener = (id, type) => {
 
 const mapBtnEventListenerToHome = () => {
   currentMapProgress += 1;
+  stopAudio();
   goHome();
+  music("map");
 };
 
 const mapBtnEventListenerToForest = () => {
   currentMapProgress += 1;
-  return goForest();
+  stopAudio();
+  goForest();
+  music("fight");
 };
 
 const mapBtnEventListenerToTavern = () => {
   currentMapProgress += 1;
-  return goTavern();
+  stopAudio();
+  goTavern();
+  music("map");
 };
 
 const mapBtnEventListenerToTower = () => {
   currentMapProgress += 1;
-  return goTower();
+  stopAudio();
+  goTower();
+  music("fight");
 };
 
 const mapBtnEventListenerToCave = () => {
   currentMapProgress += 1;
-  return goCave();
+  stopAudio();
+  goCave();
+  music("fight");
 };
 
 const mapBtnEventListenerToVillage = () => {
   currentMapProgress += 1;
-  return goVillage();
+  stopAudio();
+  goVillage();
+  music("map");
 };
 
 const mapBtnEventListenerToGraveyard = () => {
   currentMapProgress += 1;
-  return goGraveyard();
+  stopAudio();
+  goGraveyard();
+  music("fight");
 };
 
 ///// map HTML
@@ -137,11 +151,13 @@ const nodes = [
 ];
 
 const goMap = () => {
+  stopAudio();
   document.body.innerHTML = "";
   document.body.innerHTML = mapHtml;
   drawMapPath(currentMapProgress);
   addMapBtnListener(currentMapProgress, nodes[currentMapProgress]);
   renderItemsBar(charCurrentItems);
+  music("map");
 };
 
 ////////////// 3.0 Home

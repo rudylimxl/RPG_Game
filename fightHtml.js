@@ -2,7 +2,7 @@ const fightHtml = `
 <div class="fightContainer">
 <div class="charFightContainer">
   <div class="charHealthBarContainer">
-    <p>Char</p>
+    <p class="charName">Char</p>
     <div class="healthBarBg">
       <div class="charHealthBar"></div>
     </div>
@@ -15,9 +15,9 @@ const fightHtml = `
     />
   </div>
   <div class="cardContainer">
-    <button id="charAtkBtn">Attack</button>
-    <button id="charDefBtn">Defend</button>
-    <button id="charEndTurnBtn">End Turn</button>
+    <button class="fightBtn" id="charAtkBtn">Attack</button>
+    <button class="fightBtn" id="charDefBtn">Defend</button>
+    <button class="fightBtn" id="charEndTurnBtn">End Turn</button>
   </div>
   <div class="charStatusContainer">
     <div class="apBar">

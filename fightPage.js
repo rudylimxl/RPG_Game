@@ -31,6 +31,11 @@ const setCharToon = () => {
   charToon.setAttribute("src", charUrl);
 };
 
+const setCharName = () => {
+  const charName = document.querySelector(".charName");
+  charName.innerText = `${charSelected}`;
+};
+
 const setEnemyToon = () => {
   const enemyToon = document.querySelector("#enemyToon");
   const enemyLower = currentEnemy.toLowerCase() + "left";
@@ -221,6 +226,7 @@ const initializeFight = () => {
   initializeFightStats();
   setDiceDisplay();
   setCharToon();
+  setCharName();
   setEnemyToon();
   renderCharAP(charFightAP);
   renderCharHP();
@@ -249,7 +255,7 @@ const charAttackMove = () => {
     //render
     renderCharAtk();
     updateBattleLog(
-      `Char rolls ${thisRollAttack} points, next attack will deal ${
+      `${charSelected} rolls ${thisRollAttack} points, next attack will deal ${
         charAtkThisTurn + charCurrentBonusAtk
       } damage!`
     );
@@ -264,7 +270,7 @@ const charDefendMove = () => {
     renderCharAP(charFightAP);
     charDefThisTurn += charCurrentDef;
     updateBattleLog(
-      `Char defends, for total of ${
+      `${charSelected} defends, for total of ${
         charDefThisTurn + charCurrentBonusDef
       } points!`
     );
@@ -282,14 +288,15 @@ const charEndTurn = () => {
       ? charTotalAtkThisTurn - enemyDefThisTurn
       : 0;
   updateBattleLog(
-    `Char attacks for ${charTotalAtkThisTurn} damage (reduced by enemy's ${enemyDefThisTurn} defense)`
+    `${charSelected} attacks for ${charTotalAtkThisTurn} damage (reduced by ${currentEnemy}'s ${enemyDefThisTurn} defense)`
   );
   const enemyDamage =
     enemyAtkThisTurn > charDefThisTurn + charBonusArmor
       ? enemyAtkThisTurn - (charDefThisTurn + charBonusArmor)
       : 0;
   updateBattleLog(
-    `Enemy attacks for ${enemyDamage} damage (reduced by ${charDefThisTurn} defense)`
+    `${currentEnemy} attacks for ${enemyDamage} damage (reduced by ${charDefThisTurn} defense)
+    `
   );
   charCurrentHealth -= enemyDamage;
   renderCharHP();
@@ -307,19 +314,25 @@ const charEndTurn = () => {
   renderEnemyAtk();
   renderEnemyDef();
   if (charCurrentHealth <= 0) {
+    stopAudio();
     goGameover();
+    music("death");
   } else if (enemyCurrentHealth <= 0 && currentMapProgress === 7) {
+    stopAudio();
     goWin();
+    music("win");
   } else if (enemyCurrentHealth <= 0) {
     const enemyToon = document.querySelector("#enemyToon");
     const deathAnimation = `assets/${currentEnemy.toLowerCase()}death.gif`;
     enemyToon.setAttribute("src", deathAnimation);
     setTimeout(() => {
-      updateBattleLog(`Char won the battle!`);
+      updateBattleLog(`${charSelected} won the battle!`);
       updateBattleLog(`Going back to the map...`);
     }, 1400);
+    stopAudio();
     setTimeout(goMap, 4000);
     removeEventListener();
+    music("map");
   }
 };
 

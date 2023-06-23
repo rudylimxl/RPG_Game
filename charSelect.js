@@ -109,6 +109,8 @@ const startChar = () => {
   gameGoButton.innerText = `Choose a class! 
     It's dangerous out there, you need some equipments.`;
   charSelector.appendChild(gameGoButton);
+  generateAudio("start");
+  playAudio();
 };
 
 startButton.addEventListener("click", startChar);
