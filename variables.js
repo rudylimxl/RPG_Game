@@ -205,9 +205,9 @@ let currentEnemy = "";
 let enemyHP = 40;
 let enemyAtk = 5;
 let enemyDef = 10;
-const enemyHpScaling = [1, 1, 1, 1.4, 1.4, 1.5, 2, 2];
-const enemyAtkScaling = [1, 1, 1, 1.2, 1.3, 1.4, 1.5, 1.6];
-const enemyDefScaling = [1, 1, 1, 1.2, 1.3, 1.4, 1.5, 1.6];
+const enemyHpScaling = [1, 1, 1, 1, 1, 1, 1, 1];
+const enemyAtkScaling = [1, 1, 1, 1.1, 1.1, 1.2, 1.2, 1.2];
+const enemyDefScaling = [1, 1, 1, 1.1, 1.2, 1.3, 1.3, 1.3];
 
 //initialize enemy fight stat
 let enemyCurrentHealth = 0;

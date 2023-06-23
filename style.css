@@ -454,7 +454,8 @@ img {
   background-repeat: no-repeat;
 }
 
-.gameoverContainer {
+.gameoverContainer,
+.winContainer {
   background: url(assets/gameover.jpeg);
   background-repeat: no-repeat;
   margin: 0 auto;
@@ -466,12 +467,17 @@ img {
   position: relative;
 }
 
+.winContainer {
+  background: url(assets/win.jpg);
+  background-repeat: no-repeat;
+}
+
 .tryAgain {
   position: absolute;
   top: 40%;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  height: 100px;
+  height: 75px;
   width: 250px;
 }

@@ -308,6 +308,8 @@ const charEndTurn = () => {
   renderEnemyDef();
   if (charCurrentHealth <= 0) {
     goGameover();
+  } else if (enemyCurrentHealth <= 0 && currentMapProgress === 7) {
+    goWin();
   } else if (enemyCurrentHealth <= 0) {
     const enemyToon = document.querySelector("#enemyToon");
     const deathAnimation = `assets/${currentEnemy.toLowerCase()}death.gif`;
@@ -338,6 +340,19 @@ const gameoverHtml = `
 const goGameover = () => {
   document.body.innerHTML = "";
   document.body.innerHTML = gameoverHtml;
+  const btn = document.querySelector("button");
+  btn.classList.add("tryAgain");
+};
+
+const winHtml = `
+<div class="winContainer">
+    <button onClick="window.location.reload()">Try A Different Character? :)</button>
+</div>
+    `;
+
+const goWin = () => {
+  document.body.innerHTML = "";
+  document.body.innerHTML = winHtml;
   const btn = document.querySelector("button");
   btn.classList.add("tryAgain");
 };
