@@ -453,3 +453,25 @@ img {
   background: url(assets/attack.png);
   background-repeat: no-repeat;
 }
+
+.gameoverContainer {
+  background: url(assets/gameover.jpeg);
+  background-repeat: no-repeat;
+  margin: 0 auto;
+  height: 450px;
+  width: 750px;
+  border: 4px solid gray;
+  border-radius: 15px;
+  padding: 5px;
+  position: relative;
+}
+
+.tryAgain {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  height: 100px;
+  width: 250px;
+}

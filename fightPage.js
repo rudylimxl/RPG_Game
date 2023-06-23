@@ -306,7 +306,9 @@ const charEndTurn = () => {
   randomizeEnemyAction();
   renderEnemyAtk();
   renderEnemyDef();
-  if (enemyCurrentHealth <= 0) {
+  if (charCurrentHealth <= 0) {
+    goGameover();
+  } else if (enemyCurrentHealth <= 0) {
     const enemyToon = document.querySelector("#enemyToon");
     const deathAnimation = `assets/${currentEnemy.toLowerCase()}death.gif`;
     enemyToon.setAttribute("src", deathAnimation);
@@ -324,4 +326,18 @@ const goFight = () => {
   document.body.innerHTML = "";
   document.body.innerHTML = fightHtml;
   initializeFight();
+};
+
+///gameover
+const gameoverHtml = `
+<div class="gameoverContainer">
+    <button onClick="window.location.reload()">Try Again</button>
+</div>
+    `;
+
+const goGameover = () => {
+  document.body.innerHTML = "";
+  document.body.innerHTML = gameoverHtml;
+  const btn = document.querySelector("button");
+  btn.classList.add("tryAgain");
 };
