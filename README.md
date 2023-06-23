@@ -8,4 +8,4 @@ Game Design Philosophy
 A 'roguelike' game genre focuses on replayability. Instead of building long story line with characters getting stronger over multiple hours (or tens of hours) of gameplay, roguelike games cycle lasts 20mins-1hr, with character resetting over a short game progression.
 
 Game Mechanics
-(insert diagram here)
+![](assets/Wireframe.png)
