@@ -186,12 +186,12 @@ const itemArray = [
 ////enemy list and stats
 const normalEnemiesArr = [
   "Demon",
-  "Lizard",
+  "Dragon",
   "Goblin",
-  "Masked",
+  "Warrior",
   "Bigdemon",
-  "Zombie",
-  "Ogre",
+  "Necromancer",
+  "Ghost",
 ];
 
 const enemyActionsArr = [

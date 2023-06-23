@@ -308,7 +308,8 @@ const charEndTurn = () => {
   renderEnemyDef();
   if (enemyCurrentHealth <= 0) {
     const enemyToon = document.querySelector("#enemyToon");
-    enemyToon.setAttribute("src", "assets/bigdemondeath.gif");
+    const deathAnimation = `assets/${currentEnemy.toLowerCase()}death.gif`;
+    enemyToon.setAttribute("src", deathAnimation);
     setTimeout(() => {
       updateBattleLog(`Char won the battle!`);
       updateBattleLog(`Going back to the map...`);
