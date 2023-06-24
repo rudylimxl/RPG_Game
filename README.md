@@ -4,7 +4,8 @@ Building a browser RPG Game inspired by one of my favorite title of all time, Sl
 
 ![](https://github.com/rudylimxl/RPG_Game/blob/main/assets/knight.gif)![](https://github.com/rudylimxl/RPG_Game/blob/main/assets/wizard.gif)![](https://github.com/rudylimxl/RPG_Game/blob/main/assets/orc96.gif)![](https://github.com/rudylimxl/RPG_Game/blob/main/assets/lizard.gif)![](https://github.com/rudylimxl/RPG_Game/blob/main/assets/goblin.gif)
 
-The game is built completely using HTML, CSS, and vanilla JS.
+Play the game at https://rudy.page/game.html !
+The game is built completely using HTML, CSS, and vanilla JS. <br>
 DOM manipulation is used to render elements and perform actions on the page.
 
 ## Game Design Philosophy: <br>
